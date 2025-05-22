@@ -1,47 +1,112 @@
 {% extends 'inventory/base.html' %}
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-10 col-12 mx-auto mt-5">
-            <div class="d-flex justify-content-end">
-                <a href="{% url 'add-item' %}" class="btn btn-primary">+</a>
-            </div>
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Categoria</th>
-                        <th scope="col">Quantidade</th>
-                        <th scope="col">Preço</th> 
-                        <th scope="col"></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% if items|length == 0 %}
-                    <tr>
-                        <th scope="row">-</th>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                    </tr>
-                    {% endif %}
+<style>
+    .dashboard-container {
+        background-color: #4B2614; /* marrom escuro */
+        border-radius: 20px;
+        padding: 30px;
+        margin-top: 20px;
+        color: white;
+    }
 
-                    {% for item in items %}
-                    <tr>
-                        <th scope="row">{{ item.id }}</th>
-                        <td>{{ item.nome }}</td>
-                        <td>{{ item.categoria.nome }}</td>
-                        <td>{{ item.quantidade }}</td>
-                        <td>{{ item.preco }}</td>
-                        <td><a href="{% url 'edit-item' item.id %}" class="btn btn-outline-secondary">Editar</a></td>
-                        <td><a href="{% url 'delete-item' item.id%}" class="btn btn-outline-secondary">Deletar</a></td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    .dashboard-table {
+        background-color: white;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+
+    .dashboard-table th,
+    .dashboard-table td {
+        vertical-align: middle;
+        color: #333;
+    }
+
+    .btn-marrom {
+        background-color: #512d1e;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        padding: 8px 20px;
+    }
+
+    .btn-marrom:hover {
+        background-color: #3a1f14;
+    }
+
+    .btn-outline-light {
+        border-color: #fff;
+        color: #fff;
+    }
+
+    .btn-outline-light:hover {
+        background-color: #fff;
+        color: #4B2614;
+    }
+
+    .top-button {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 20px;
+    }
+
+    .bottom-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 30px;
+    }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-md-11 col-12">
+        <div class="dashboard-container">
+            <div class="top-button">
+                <a href="{% url 'add-item' %}" class="btn btn-marrom">+</a>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table dashboard-table table-striped table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Categoria</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                            <th colspan="2">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if items|length == 0 %}
+                        <tr>
+                            <td colspan="7" class="text-center">Nenhum item encontrado.</td>
+                        </tr>
+                        {% else %}
+                            {% for item in items %}
+                            <tr>
+                                <td>{{ item.id }}</td>
+                                <td>{{ item.nome }}</td>
+                                <td>{{ item.categoria.nome }}</td>
+                                <td>{{ item.quantidade }}</td>
+                                <td>R$ {{ item.preco }}</td>
+                                <td>
+                                    <a href="{% url 'edit-item' item.id %}" class="btn btn-outline-light">Editar</a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'delete-item' item.id %}" class="btn btn-outline-light">Deletar</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="bottom-buttons">
+                <a href="{% url 'realizar_venda' %}" class="btn btn-marrom">Realizar Vendas</a>
+                <a href="{% url 'relatorio_semanal' %}" class="btn btn-outline-light">Exportar Relatório Semanal</a>
+            </div>
         </div>
     </div>
-{% endblock content %}
+</div>
+{% endblock %}

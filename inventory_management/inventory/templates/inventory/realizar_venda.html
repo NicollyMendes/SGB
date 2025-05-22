@@ -1,0 +1,54 @@
+{% extends 'inventory/base.html' %}
+{% load static %}
+{% block content %}
+
+<h1>Registrar Venda</h1>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert alert-success">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+{% if erro %}
+  <div class="alert alert-danger">{{ erro }}</div>
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+
+    <label for="cliente">Cliente:</label>
+    <select name="cliente" class="form-control" required>
+        <option value="">Selecione um cliente</option>
+        {% for cliente in clientes %}
+        <option value="{{ cliente.id }}">{{ cliente.nome }} - {{ cliente.cpf }}</option>
+        {% endfor %}
+    </select>
+
+    <table class="table mt-3">
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Quantidade</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in itens %}
+            <tr>
+                <td>{{ item.nome }}</td>
+                <td>R$ {{ item.preco }}</td>
+                <td>{{ item.quantidade }}</td>
+                <td>
+                    <input type="number" name="quantidade_{{ item.id }}" min="0" max="{{ item.quantidade }}" value="0" class="form-control">
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <button type="submit" class="btn btn-primary mt-3">Finalizar Venda</button>
+</form>
+
+{% endblock %}
