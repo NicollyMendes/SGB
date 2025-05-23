@@ -1,19 +1,70 @@
 {% extends 'inventory/base.html' %}
 
-
 {% block content %}
-    <div>
-        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary my-3 mx-4">Voltar</a>
-        <div class="row">
-            <form method="POST" class="col-sm-11 col-md-4 mx-auto mt-5">
-                {% csrf_token %}
-                <h1 class="fw-light">Tem certeza que você quer deletar {{ item.name }}?</h1>
-                <p class="fw-light">Isso não poderá ser desfeito!</p>
+<style>
+    .delete-container {
+        background-color: #F5E0C3;
+        border-radius: 30px;
+        padding: 40px 30px;
+        max-width: 600px;
+        margin: 80px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
 
-                <div>
-                    <button class="btn btn-danger">Deletar</button>
-                </div>
-            </form>
-        </div>
-    </div>
-{% endblock content %}
+    .delete-container h1 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #4B2614;
+        margin-bottom: 20px;
+    }
+
+    .delete-container p {
+        color: #4B2614;
+        font-weight: 500;
+        margin-bottom: 30px;
+    }
+
+    .btn-voltar {
+        background-color: transparent;
+        color: #4B2614;
+        font-weight: bold;
+        text-decoration: none;
+        border: 2px solid #4B2614;
+        padding: 8px 20px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        display: inline-block;
+    }
+
+    .btn-voltar:hover {
+        background-color: #4B2614;
+        color: white;
+    }
+
+    .btn-deletar {
+        background-color: #a52828;
+        color: white;
+        border: none;
+        padding: 10px 30px;
+        border-radius: 25px;
+        font-weight: bold;
+    }
+
+    .btn-deletar:hover {
+        background-color: #841c1c;
+    }
+</style>
+
+<div class="delete-container">
+    <a href="{% url 'dashboard' %}" class="btn-voltar">Voltar</a>
+
+    <form method="POST">
+        {% csrf_token %}
+        <h1>Tem certeza que deseja deletar <br><strong>{{ item.nome }}</strong>?</h1>
+        <p>Essa ação não poderá ser desfeita.</p>
+
+        <button type="submit" class="btn-deletar">Deletar</button>
+    </form>
+</div>
+{% endblock %}

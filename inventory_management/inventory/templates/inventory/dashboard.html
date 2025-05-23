@@ -1,47 +1,56 @@
 {% extends 'inventory/base.html' %}
+{% load static %}
 
 {% block content %}
+{% if request.META.HTTP_REFERER %}
+<div style="margin: 30px;">
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn-marrom">Voltar</a>
+</div>
+{% endif %}
+
 <style>
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
     .dashboard-container {
-        background-color: #4B2614; /* marrom escuro */
-        border-radius: 20px;
-        padding: 30px;
-        margin-top: 20px;
+        background-color: #4B2614;
         color: white;
+        padding: 30px 20px;
+        width: 100vw;
+        min-height: calc(100vh - 100px);
+        box-sizing: border-box;
     }
 
     .dashboard-table {
         background-color: white;
         border-radius: 15px;
         overflow: hidden;
+        width: 100%;
     }
 
     .dashboard-table th,
     .dashboard-table td {
         vertical-align: middle;
         color: #333;
+        font-size: 0.95rem;
     }
 
-    .btn-marrom {
-        background-color: #512d1e;
-        color: #fff;
+    .btn-bege {
+        background-color: #F5E0C3;
+        color: #4B2614;
         border: none;
         border-radius: 20px;
         padding: 8px 20px;
+        font-weight: bold;
+        text-decoration: none;
+        white-space: nowrap;
     }
 
-    .btn-marrom:hover {
-        background-color: #3a1f14;
-    }
-
-    .btn-outline-light {
-        border-color: #fff;
-        color: #fff;
-    }
-
-    .btn-outline-light:hover {
-        background-color: #fff;
-        color: #4B2614;
+    .btn-bege:hover {
+        background-color: #e4d2b9;
+        color: #3a1f14;
     }
 
     .top-button {
@@ -50,63 +59,90 @@
         margin-bottom: 20px;
     }
 
+    .menu-dashboard {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        margin-bottom: 30px;
+    }
+
     .bottom-buttons {
         display: flex;
+        flex-wrap: wrap;
         gap: 10px;
         margin-top: 30px;
     }
+
+    @media (max-width: 768px) {
+        .top-button {
+            justify-content: center;
+        }
+        .menu-dashboard, .bottom-buttons {
+            justify-content: center;
+        }
+        .dashboard-table th, .dashboard-table td {
+            font-size: 0.85rem;
+        }
+    }
 </style>
 
-<div class="row justify-content-center">
-    <div class="col-md-11 col-12">
-        <div class="dashboard-container">
-            <div class="top-button">
-                <a href="{% url 'add-item' %}" class="btn btn-marrom">+</a>
-            </div>
+<div class="dashboard-container">
 
-            <div class="table-responsive">
-                <table class="table dashboard-table table-striped table-bordered">
-                    <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nome</th>
-                            <th>Categoria</th>
-                            <th>Quantidade</th>
-                            <th>Preço</th>
-                            <th colspan="2">Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% if items|length == 0 %}
-                        <tr>
-                            <td colspan="7" class="text-center">Nenhum item encontrado.</td>
-                        </tr>
-                        {% else %}
-                            {% for item in items %}
-                            <tr>
-                                <td>{{ item.id }}</td>
-                                <td>{{ item.nome }}</td>
-                                <td>{{ item.categoria.nome }}</td>
-                                <td>{{ item.quantidade }}</td>
-                                <td>R$ {{ item.preco }}</td>
-                                <td>
-                                    <a href="{% url 'edit-item' item.id %}" class="btn btn-outline-light">Editar</a>
-                                </td>
-                                <td>
-                                    <a href="{% url 'delete-item' item.id %}" class="btn btn-outline-light">Deletar</a>
-                                </td>
-                            </tr>
-                            {% endfor %}
-                        {% endif %}
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="bottom-buttons">
-                <a href="{% url 'realizar_venda' %}" class="btn btn-marrom">Realizar Vendas</a>
-                <a href="{% url 'relatorio_semanal' %}" class="btn btn-outline-light">Exportar Relatório Semanal</a>
-            </div>
-        </div>
+    <!-- Botões de menu -->
+    <div class="menu-dashboard">
+        <a href="/admin/" class="btn-bege d-flex align-items-center gap-2">
+            <img src="{% static 'icon/iconproduto.png' %}" alt="Produtos" style="height: 20px;"> Produtos
+        </a>
+        <a href="{% url 'pagina_pedidos' %}" class="btn-bege d-flex align-items-center gap-2">
+            <img src="{% static 'icon/pedidos.png' %}" alt="Pedidos" style="height: 20px;"> Pedidos
+        </a>
     </div>
+
+    <!-- Botão adicionar item -->
+    <div class="top-button">
+        <a href="{% url 'add-item' %}" class="btn-bege">Adicionar Item</a>
+    </div>
+
+    <!-- Tabela -->
+    <div class="table-responsive">
+        <table class="table dashboard-table table-striped table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Quantidade</th>
+                    <th>Preço</th>
+                    <th colspan="2">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if items|length == 0 %}
+                <tr>
+                    <td colspan="7" class="text-center">Nenhum item encontrado.</td>
+                </tr>
+                {% else %}
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.nome }}</td>
+                        <td>{{ item.categoria.nome }}</td>
+                        <td>{{ item.quantidade }}</td>
+                        <td>R$ {{ item.preco }}</td>
+                        <td><a href="{% url 'edit-item' item.id %}" class="btn btn-bege">Editar</a></td>
+                        <td><a href="{% url 'delete-item' item.id %}" class="btn btn-bege">Deletar</a></td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Botões finais -->
+    <div class="bottom-buttons">
+        <a href="{% url 'realizar_venda' %}" class="btn-bege">Realizar Vendas</a>
+        <a href="{% url 'relatorio_semanal' %}" class="btn-bege">Exportar Relatório Semanal</a>
+    </div>
+
 </div>
 {% endblock %}

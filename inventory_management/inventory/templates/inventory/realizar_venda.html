@@ -1,54 +1,103 @@
 {% extends 'inventory/base.html' %}
-{% load static %}
+
 {% block content %}
-
-<h1>Registrar Venda</h1>
-
-{% if messages %}
-  {% for message in messages %}
-    <div class="alert alert-success">{{ message }}</div>
-  {% endfor %}
+{% if request.META.HTTP_REFERER %}
+<div style="margin: 30px;">
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn-marrom">Voltar</a>
+</div>
 {% endif %}
 
-{% if erro %}
-  <div class="alert alert-danger">{{ erro }}</div>
-{% endif %}
+<style>
+    .venda-container {
+        background-color: #F5E0C3;
+        border-radius: 30px;
+        padding: 40px 30px;
+        max-width: 720px;
+        margin: 80px auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
 
-<form method="post">
-    {% csrf_token %}
+    .venda-container h1 {
+        text-align: center;
+        color: #4B2614;
+        font-size: 1.6rem;
+        margin-bottom: 30px;
+    }
 
-    <label for="cliente">Cliente:</label>
-    <select name="cliente" class="form-control" required>
-        <option value="">Selecione um cliente</option>
-        {% for cliente in clientes %}
-        <option value="{{ cliente.id }}">{{ cliente.nome }} - {{ cliente.cpf }}</option>
-        {% endfor %}
-    </select>
+    .form-group label {
+        font-weight: bold;
+        color: #4B2614;
+        margin-top: 15px;
+    }
 
-    <table class="table mt-3">
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Preço</th>
-                <th>Estoque</th>
-                <th>Quantidade</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for item in itens %}
-            <tr>
-                <td>{{ item.nome }}</td>
-                <td>R$ {{ item.preco }}</td>
-                <td>{{ item.quantidade }}</td>
-                <td>
-                    <input type="number" name="quantidade_{{ item.id }}" min="0" max="{{ item.quantidade }}" value="0" class="form-control">
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    .form-control {
+        border-radius: 10px;
+        background-color: #F9F5EC;
+        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+    }
 
-    <button type="submit" class="btn btn-primary mt-3">Finalizar Venda</button>
-</form>
+    .btn-marrom {
+        background-color: #4B2614;
+        color: white;
+        border-radius: 25px;
+        padding: 10px 30px;
+        font-weight: bold;
+        border: none;
+    }
 
+    .btn-marrom:hover {
+        background-color: #3a1f14;
+    }
+
+    .form-btn {
+        text-align: center;
+        margin-top: 30px;
+    }
+
+    @media (max-width: 768px) {
+        .venda-container {
+            margin: 40px 15px;
+            padding: 30px 20px;
+        }
+    }
+</style>
+
+<div class="venda-container">
+    <h1>Realizar Venda</h1>
+
+    {% if erro %}
+        <p style="color:red">{{ erro }}</p>
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="cliente">Cliente:</label>
+            <select name="cliente" id="cliente" class="form-control" required>
+                {% for cliente in clientes %}
+                <option value="{{ cliente.id }}">{{ cliente.nome }} - {{ cliente.cpf }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="item">Selecione o item:</label>
+            <select name="item" id="item" class="form-control" required>
+                {% for item in itens %}
+                <option value="{{ item.id }}">{{ item.nome }} (Estoque: {{ item.quantidade }})</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="quantidade">Quantidade vendida:</label>
+            <input type="number" min="1" name="quantidade" id="quantidade" class="form-control" required>
+        </div>
+
+        <div class="form-btn">
+            <button type="submit" class="btn-marrom">Salvar</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

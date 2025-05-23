@@ -173,3 +173,8 @@ class RelatorioSemanalExcel(LoginRequiredMixin, View):
             response = HttpResponse(f.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
             response['Content-Disposition'] = f'attachment; filename={nome_arquivo}'
             return response
+
+class PaginaPedidos(LoginRequiredMixin, View):
+    def get(self, request):
+        pedidos = Venda.objects.select_related('cliente').prefetch_related('itens__item').order_by('-data_venda')
+        return render(request, 'inventory/pedidos.html', {'pedidos': pedidos})

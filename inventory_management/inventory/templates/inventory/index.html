@@ -1,15 +1,57 @@
 {% extends 'inventory/base.html' %}
+{% load static %}
 
-{% block content%}
-<div>
-    <div class="row">
-        <div class="col-sm-11 col-md-4 mx-auto mt-5 px-3">
-            <h1 class="fw-light">Gerencie seu Estoque</h1>
-            
-            <div>
-                <a href="{% url 'dashboard' %}" class="btn btn-primary">Começar Agora!</a>
-            </div>
-        </div>
+{% block content %}
+
+<style>
+    .index-container {
+        background-color: #4B2614;
+        color: #F5E0C3;
+        height: calc(100vh - 100px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .btn-bege {
+        background-color: #F5E0C3;
+        color: #4B2614;
+        border: none;
+        border-radius: 25px;
+        padding: 12px 32px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        text-decoration: none;
+        margin: 10px;
+        display: inline-block;
+        min-width: 160px;
+    }
+
+    .btn-bege:hover {
+        background-color: #e4d2b9;
+        color: #3a1f14;
+    }
+
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    @media (min-width: 576px) {
+        .button-group {
+            flex-direction: row;
+            gap: 20px;
+        }
+    }
+</style>
+
+<div class="index-container">
+    <div class="button-group">
+        <a href="{% url 'login' %}" class="btn-bege">Entrar</a>
+        <a href="{% url 'signup' %}" class="btn-bege">Cadastro</a>
     </div>
 </div>
-{% endblock content%}
+{% endblock %}

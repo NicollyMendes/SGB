@@ -40,6 +40,9 @@ class Venda(models.Model):
 
     def __str__(self):
         return f"Venda #{self.id} para {self.cliente.nome} em {self.data_venda.strftime('%d/%m/%Y')}"
+    
+    def total(self):
+        return sum(item.quantidade * item.preco_unitario for item in self.itens.all())
 
 class ItemVenda(models.Model):
     venda = models.ForeignKey('Venda', on_delete=models.CASCADE, related_name='itens')
