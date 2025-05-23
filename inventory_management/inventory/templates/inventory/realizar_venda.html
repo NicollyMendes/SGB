@@ -2,81 +2,26 @@
 
 {% block content %}
 {% if request.META.HTTP_REFERER %}
-<div style="margin: 30px;">
+<div class="mb-4 ms-4">
     <a href="{{ request.META.HTTP_REFERER }}" class="btn-marrom">Voltar</a>
 </div>
 {% endif %}
-
-<style>
-    .venda-container {
-        background-color: #F5E0C3;
-        border-radius: 30px;
-        padding: 40px 30px;
-        max-width: 720px;
-        margin: 80px auto;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .venda-container h1 {
-        text-align: center;
-        color: #4B2614;
-        font-size: 1.6rem;
-        margin-bottom: 30px;
-    }
-
-    .form-group label {
-        font-weight: bold;
-        color: #4B2614;
-        margin-top: 15px;
-    }
-
-    .form-control {
-        border-radius: 10px;
-        background-color: #F9F5EC;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .btn-marrom {
-        background-color: #4B2614;
-        color: white;
-        border-radius: 25px;
-        padding: 10px 30px;
-        font-weight: bold;
-        border: none;
-    }
-
-    .btn-marrom:hover {
-        background-color: #3a1f14;
-    }
-
-    .form-btn {
-        text-align: center;
-        margin-top: 30px;
-    }
-
-    @media (max-width: 768px) {
-        .venda-container {
-            margin: 40px 15px;
-            padding: 30px 20px;
-        }
-    }
-</style>
 
 <div class="venda-container">
     <h1>Realizar Venda</h1>
 
     {% if erro %}
-        <p style="color:red">{{ erro }}</p>
+        <p class="erro-venda">{{ erro }}</p>
     {% endif %}
 
     <form method="POST">
         {% csrf_token %}
-        
+
         <div class="form-group">
             <label for="cliente">Cliente:</label>
             <select name="cliente" id="cliente" class="form-control" required>
                 {% for cliente in clientes %}
-                <option value="{{ cliente.id }}">{{ cliente.nome }} - {{ cliente.cpf }}</option>
+                    <option value="{{ cliente.id }}">{{ cliente.nome }} - {{ cliente.cpf }}</option>
                 {% endfor %}
             </select>
         </div>
@@ -85,7 +30,7 @@
             <label for="item">Selecione o item:</label>
             <select name="item" id="item" class="form-control" required>
                 {% for item in itens %}
-                <option value="{{ item.id }}">{{ item.nome }} (Estoque: {{ item.quantidade }})</option>
+                    <option value="{{ item.id }}">{{ item.nome }} (Estoque: {{ item.quantidade }})</option>
                 {% endfor %}
             </select>
         </div>

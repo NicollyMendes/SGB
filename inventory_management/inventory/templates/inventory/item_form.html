@@ -2,59 +2,11 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-
-
-<style>
-    .item-form-container {
-        background-color: #F5E0C3;
-        border-radius: 30px;
-        padding: 40px 30px;
-        max-width: 600px;
-        margin: 80px auto;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .item-form-container h1 {
-        text-align: center;
-        color: #4B2614;
-        font-size: 1.5rem;
-        margin-bottom: 30px;
-    }
-
-    .form-label {
-        font-weight: bold;
-        color: #4B2614;
-    }
-
-    .form-control {
-        border-radius: 10px;
-        background-color: #F9F5EC;
-        box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .btn-marrom {
-        background-color: #4B2614;
-        color: white;
-        border-radius: 25px;
-        padding: 10px 30px;
-        font-weight: bold;
-        border: none;
-        text-decoration: none;
-    }
-
-    .btn-marrom:hover {
-        background-color: #3a1f14;
-    }
-
-    .btn-voltar {
-        margin-left: 30px;
-        margin-top: 30px;
-    }
-</style>
-
+{% if request.META.HTTP_REFERER %}
 <div class="btn-voltar">
-    <a href="{% url 'dashboard' %}" class="btn-marrom">Voltar</a>
+    <a href="{{ request.META.HTTP_REFERER }}" class="btn-marrom">Voltar</a>
 </div>
+{% endif %}
 
 <div class="item-form-container">
     <h1>Item de Inventário</h1>

@@ -3,92 +3,15 @@
 
 {% block content %}
 {% if request.META.HTTP_REFERER %}
-<div style="margin: 30px;">
+<div class="mb-4 ms-4">
     <a href="{{ request.META.HTTP_REFERER }}" class="btn-marrom">Voltar</a>
 </div>
 {% endif %}
 
-<style>
-    body {
-        margin: 0;
-        padding: 0;
-    }
+<div class="dashboard-container dashboard-box">
+    <h2 class="titulo-pagina">Estoque</h2>
 
-    .dashboard-container {
-        background-color: #4B2614;
-        color: white;
-        padding: 30px 20px;
-        width: 100vw;
-        min-height: calc(100vh - 100px);
-        box-sizing: border-box;
-    }
 
-    .dashboard-table {
-        background-color: white;
-        border-radius: 15px;
-        overflow: hidden;
-        width: 100%;
-    }
-
-    .dashboard-table th,
-    .dashboard-table td {
-        vertical-align: middle;
-        color: #333;
-        font-size: 0.95rem;
-    }
-
-    .btn-bege {
-        background-color: #F5E0C3;
-        color: #4B2614;
-        border: none;
-        border-radius: 20px;
-        padding: 8px 20px;
-        font-weight: bold;
-        text-decoration: none;
-        white-space: nowrap;
-    }
-
-    .btn-bege:hover {
-        background-color: #e4d2b9;
-        color: #3a1f14;
-    }
-
-    .top-button {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 20px;
-    }
-
-    .menu-dashboard {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 12px;
-        margin-bottom: 30px;
-    }
-
-    .bottom-buttons {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 30px;
-    }
-
-    @media (max-width: 768px) {
-        .top-button {
-            justify-content: center;
-        }
-        .menu-dashboard, .bottom-buttons {
-            justify-content: center;
-        }
-        .dashboard-table th, .dashboard-table td {
-            font-size: 0.85rem;
-        }
-    }
-</style>
-
-<div class="dashboard-container">
-
-    <!-- Botões de menu -->
     <div class="menu-dashboard">
         <a href="/admin/" class="btn-bege d-flex align-items-center gap-2">
             <img src="{% static 'icon/iconproduto.png' %}" alt="Produtos" style="height: 20px;"> Produtos
@@ -98,12 +21,12 @@
         </a>
     </div>
 
-    <!-- Botão adicionar item -->
-    <div class="top-button">
-        <a href="{% url 'add-item' %}" class="btn-bege">Adicionar Item</a>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'add-item' %}" class="btn-bege">+ Adicionar Item</a>
     </div>
 
-    <!-- Tabela -->
+
     <div class="table-responsive">
         <table class="table dashboard-table table-striped table-bordered">
             <thead class="table-light">
@@ -117,11 +40,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% if items|length == 0 %}
-                <tr>
-                    <td colspan="7" class="text-center">Nenhum item encontrado.</td>
-                </tr>
-                {% else %}
+                {% if items %}
                     {% for item in items %}
                     <tr>
                         <td>{{ item.id }}</td>
@@ -129,20 +48,23 @@
                         <td>{{ item.categoria.nome }}</td>
                         <td>{{ item.quantidade }}</td>
                         <td>R$ {{ item.preco }}</td>
-                        <td><a href="{% url 'edit-item' item.id %}" class="btn btn-bege">Editar</a></td>
-                        <td><a href="{% url 'delete-item' item.id %}" class="btn btn-bege">Deletar</a></td>
+                        <td><a href="{% url 'edit-item' item.id %}" class="btn btn-sm btn-bege">Editar</a></td>
+                        <td><a href="{% url 'delete-item' item.id %}" class="btn btn-sm btn-bege">Deletar</a></td>
                     </tr>
                     {% endfor %}
+                {% else %}
+                <tr>
+                    <td colspan="7" class="text-center">Nenhum item encontrado.</td>
+                </tr>
                 {% endif %}
             </tbody>
         </table>
     </div>
 
-    <!-- Botões finais -->
+
     <div class="bottom-buttons">
         <a href="{% url 'realizar_venda' %}" class="btn-bege">Realizar Vendas</a>
-        <a href="{% url 'relatorio_semanal' %}" class="btn-bege">Exportar Relatório Semanal</a>
+        <a href="{% url 'relatorio_semanal' %}" class="btn-bege">Exportar Relatório</a>
     </div>
-
 </div>
 {% endblock %}

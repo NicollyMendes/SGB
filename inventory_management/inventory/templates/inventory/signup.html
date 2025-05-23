@@ -1,70 +1,15 @@
-{% extends "inventory/base.html" %}
+{% extends 'inventory/base.html' %}
 {% load crispy_forms_tags %}
 
 {% block content %}
 {% if request.META.HTTP_REFERER %}
-<div style="margin: 30px;">
+<div class="mb-4 ms-4">
     <a href="{{ request.META.HTTP_REFERER }}" class="btn-marrom">Voltar</a>
 </div>
 {% endif %}
 
-<style>
-    .signup-container {
-        background-color: #F5E0C3;
-        border-radius: 30px;
-        padding: 40px 30px;
-        max-width: 600px;
-        margin: 80px auto;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .signup-container h2 {
-        text-align: center;
-        color: #4B2614;
-        font-size: 1.5rem;
-        margin-bottom: 30px;
-    }
-
-    .form-label {
-        font-weight: bold;
-        color: #4B2614;
-    }
-
-    .form-control {
-        border-radius: 10px;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-
-    .btn-marrom {
-        background-color: #4B2614;
-        color: white;
-        border-radius: 25px;
-        padding: 10px 30px;
-        font-weight: bold;
-        border: none;
-    }
-
-    .btn-marrom:hover {
-        background-color: #3a1f14;
-    }
-
-    .footer-note {
-        text-align: center;
-        font-size: 0.85rem;
-        margin-top: 25px;
-        color: #4B2614;
-    }
-
-    @media (max-width: 768px) {
-        .signup-container {
-            padding: 30px 20px;
-            margin: 40px 15px;
-        }
-    }
-</style>
-
 <div class="signup-container">
-    <h2>Crie sua conta</h2>
+    <h1>Inscrever-se</h1>
 
     {% if form.errors %}
         {% for field in form %}
@@ -84,13 +29,14 @@
     <form method="post">
         {% csrf_token %}
         {{ form|crispy }}
+
         <div class="text-center mt-4">
-            <button type="submit" class="btn btn-marrom">Cadastrar</button>
+            <button class="btn btn-marrom" type="submit">Inscrever-se</button>
         </div>
     </form>
 
-    <div class="footer-note">
-        <p>Já tem uma conta? <a href="{% url 'login' %}">Entrar</a></p>
+    <div class="signup-footer">
+        <small>Já tem uma conta? <a href="{% url 'login' %}">Entrar</a></small>
     </div>
 </div>
 {% endblock %}
